@@ -1,16 +1,29 @@
+import axios from 'axios';
 import { useEffect, useState } from 'react';
 
 function App() {
-  const [users, setUsers] = useState('');
+  const [weatherData, setWeatherData] = useState('');
 
-  useEffect(() => {});
+  useEffect(() => {
+    async function getWeather() {
+      const weather = await axios(`https://api.openweathermap.org/data/2.5/weather?q=Jakarta&appid=` + import.meta.env.VITE_API_KEY);
+
+      setWeatherData(weather);
+    }
+
+    getWeather();
+  }, []);
+
   return (
-    <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-      </div>
+    <div className="App min-h-screen flex items-center justify-center">
+      <button
+        type="button"
+        onClick={() => {
+          console.log(weatherData);
+        }}
+      >
+        log data
+      </button>
     </div>
   );
 }

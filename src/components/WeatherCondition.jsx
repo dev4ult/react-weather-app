@@ -71,7 +71,6 @@ function WeatherCondition() {
         setLoading(true);
 
         const { data } = await axios(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&cnt=8&units=metric&appid=` + import.meta.env.VITE_API_KEY);
-        console.log(data);
 
         setHourlyWeatherData(data);
         setLoading(false);
@@ -87,7 +86,7 @@ function WeatherCondition() {
   useEffect(() => {
     async function getCurrentTime() {
       try {
-        const { data } = await axios(`http://api.timezonedb.com/v2.1/get-time-zone?key=${import.meta.env.VITE_TIMEZONE_API_KEY}&format=json&by=position&lat=${coord.lat}&lng=${coord.lon}`).catch((err) => {
+        const { data } = await axios(`https://api.timezonedb.com/v2.1/get-time-zone?key=${import.meta.env.VITE_TIMEZONE_API_KEY}&format=json&by=position&lat=${coord.lat}&lng=${coord.lon}`).catch((err) => {
           throw new Error('Something went wrong');
         });
         const time = data.formatted.split(' ')[1];
@@ -163,13 +162,13 @@ function WeatherCondition() {
           <p className="flex items-center gap-1 mb-5 ">
             Feels like {weatherData.main.feels_like} <TemperatureCelsius />
           </p>
-          <div className="px-3 py-1 w-fit border-l-2  bg-white/10 mx-auto">
+          <div className="px-3 py-1 w-fit border-l-2  bg-white/10 mx-auto md:mx-0">
             <p className="capitalize">{weatherData.weather[0].description}</p>
             <p>Humidity : {weatherData.main.humidity}%</p>
           </div>
         </div>
         <div className="bg-white/20 rounded-full border-l-2 border-t-2 p-5 w-fit">
-          <img src={`http://openweathermap.org/img/wn/${weatherData.weather[0].icon}@4x.png`} alt="weather icon" />
+          <img src={`https://openweathermap.org/img/wn/${weatherData.weather[0].icon}@4x.png`} alt="weather icon" />
         </div>
       </Container>
       <Container className={'p-5 col-span-3 sm:col-span-1 overflow-y-auto max-h-80'}>
@@ -194,7 +193,7 @@ function WeatherCondition() {
                     <span>{hour}</span>
                   </div>
                   <div className="flex gap-5 items-center justify-between mt-1">
-                    <img src={`http://openweathermap.org/img/wn/${data.weather[0].icon}.png`} alt="weather icon" />
+                    <img src={`https://openweathermap.org/img/wn/${data.weather[0].icon}.png`} alt="weather icon" />
                     <span className="capitalize text-right">{data.weather[0].description}</span>
                   </div>
                 </div>

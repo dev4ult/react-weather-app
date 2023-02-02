@@ -2,7 +2,11 @@
 module.exports = {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        spacemono: ['Space Mono', 'monospace'],
+      },
+    },
   },
-  plugins: [require('@tailwindcss/forms')],
+  plugins: [],
 };

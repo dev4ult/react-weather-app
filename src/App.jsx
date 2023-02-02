@@ -1,29 +1,15 @@
-import axios from 'axios';
-import { useEffect, useState } from 'react';
+import ContentCenter from './components/ContentCenter';
+import WeatherCondition from './components/WeatherCondition';
+
+import imgSunset from './assets/bg-sunset.jpg';
 
 function App() {
-  const [weatherData, setWeatherData] = useState('');
-
-  useEffect(() => {
-    async function getWeather() {
-      const weather = await axios(`https://api.openweathermap.org/data/2.5/weather?q=Jakarta&appid=` + import.meta.env.VITE_API_KEY);
-
-      setWeatherData(weather);
-    }
-
-    getWeather();
-  }, []);
-
   return (
-    <div className="App min-h-screen flex items-center justify-center">
-      <button
-        type="button"
-        onClick={() => {
-          console.log(weatherData);
-        }}
-      >
-        log data
-      </button>
+    <div className={`font-spacemono`}>
+      <ContentCenter>
+        <img src={imgSunset} className="absolute -z-10 h-full w-full object-cover" alt="sunset" />
+        <WeatherCondition />
+      </ContentCenter>
     </div>
   );
 }

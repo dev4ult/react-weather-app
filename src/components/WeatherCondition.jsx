@@ -123,7 +123,7 @@ function WeatherCondition() {
               onChange={(event) => {
                 setInputValue(event.target.value);
               }}
-              className="bg-transparent border-0 text-white focus:border-0 focus:outline-0 focus:ring-0"
+              className="bg-transparent w-full border-0 text-white focus:border-0 focus:outline-0 focus:ring-0"
               name="city-input"
               placeholder="city..."
             />
@@ -149,8 +149,8 @@ function WeatherCondition() {
           </button>
         </Container>
       </div>
-      <Container className={'p-7 w-full col-span-2 flex items-center gap-5 justify-between'}>
-        <div>
+      <Container className={'p-7 w-full col-span-3 sm:col-span-2 flex flex-col md:flex-row items-center gap-8 justify-between'}>
+        <div className="text-center md:text-left">
           <h3>
             {moment().format('MMM Do')}, {currentTime}
           </h3>
@@ -160,20 +160,19 @@ function WeatherCondition() {
           <h1 className="text-5xl font-black mt-3 flex items-center gap-2">
             {weatherData.main.temp} <TemperatureCelsius size={60} />
           </h1>
-          <p className="flex items-center gap-1 mb-5">
+          <p className="flex items-center gap-1 mb-5 ">
             Feels like {weatherData.main.feels_like} <TemperatureCelsius />
           </p>
-          <div className="px-3 py-1 w-fit border-l-2  bg-white/10">
+          <div className="px-3 py-1 w-fit border-l-2  bg-white/10 mx-auto">
             <p className="capitalize">{weatherData.weather[0].description}</p>
-
             <p>Humidity : {weatherData.main.humidity}%</p>
           </div>
         </div>
-        <div className="bg-white/20 rounded-full border-l-2 border-t-2 p-5">
+        <div className="bg-white/20 rounded-full border-l-2 border-t-2 p-5 w-fit">
           <img src={`http://openweathermap.org/img/wn/${weatherData.weather[0].icon}@4x.png`} alt="weather icon" />
         </div>
       </Container>
-      <Container className={'p-5 w-72 overflow-y-auto max-h-80'}>
+      <Container className={'p-5 col-span-3 sm:col-span-1 overflow-y-auto max-h-80'}>
         <h2 className="text-lg">Forecast / 3 Hours</h2>
         <ul>
           {hourlyWeatherData.list.map((data) => {

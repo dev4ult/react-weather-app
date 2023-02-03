@@ -6,8 +6,16 @@ import Container from './Container';
 function SearchLocation({ setLoading, setCurrentTime, setWeatherData, setHourlyWeatherData }) {
   const [city, setCity] = useState('London');
   const [inputValue, setInputValue] = useState('');
-  const [coord, setCoord] = useState(null);
   const [myCoords, setMyCoords] = useState(null);
+
+  function getCurrentTime(timezone) {
+    const localTime = new Date().getTime();
+    const localOffset = new Date().getTimezoneOffset() * 60000;
+    const currentUtcTime = localOffset + localTime;
+    const cityOffset = currentUtcTime + 1000 * timezone;
+    const time = new Date(cityOffset).toTimeString().split(' ');
+    return time[0].slice(0, 5);
+  }
 
   useEffect(() => {
     async function getWeather() {
@@ -19,7 +27,7 @@ function SearchLocation({ setLoading, setCurrentTime, setWeatherData, setHourlyW
           }
         });
 
-        setCoord({ lat: data.coord.lat, lon: data.coord.lon });
+        setCurrentTime(getCurrentTime(data.timezone));
         setWeatherData(data);
         setLoading(false);
       } catch (error) {
@@ -43,32 +51,13 @@ function SearchLocation({ setLoading, setCurrentTime, setWeatherData, setHourlyW
   }, [city]);
 
   useEffect(() => {
-    async function getCurrentTime() {
-      try {
-        const { data } = await axios(`https://api.timezonedb.com/v2.1/get-time-zone?key=${import.meta.env.VITE_TIMEZONE_API_KEY}&format=json&by=position&lat=${coord.lat}&lng=${coord.lon}`).catch((err) => {
-          throw new Error('Something went wrong');
-        });
-        const time = data.formatted.split(' ')[1];
-        setCurrentTime(time.slice(0, 5));
-      } catch (error) {
-        console.clear();
-        console.log(error);
-      }
-    }
-
-    if (coord != null) {
-      getCurrentTime();
-    }
-  }, [coord]);
-
-  useEffect(() => {
     async function getMyWeatherData() {
       try {
         setLoading(true);
         const { data } = await axios(`https://api.openweathermap.org/data/2.5/weather?lat=${myCoords.lat}&lon=${myCoords.lon}&units=metric&appid=` + import.meta.env.VITE_API_KEY);
 
+        setCurrentTime(getCurrentTime(data.timezone));
         setWeatherData(data);
-        setCoord({ lat: myCoords.lat, lon: myCoords.lon });
         setLoading(false);
       } catch (error) {
         console.log(error);
@@ -80,7 +69,6 @@ function SearchLocation({ setLoading, setCurrentTime, setWeatherData, setHourlyW
 
         const { data } = await axios(`https://api.openweathermap.org/data/2.5/forecast?lat=${myCoords.lat}&lon=${myCoords.lon}&cnt=8&units=metric&appid=` + import.meta.env.VITE_API_KEY);
 
-        setCoord({ lat: myCoords.lat, lon: myCoords.lon });
         setHourlyWeatherData(data);
         setLoading(false);
       } catch (error) {
@@ -104,14 +92,14 @@ function SearchLocation({ setLoading, setCurrentTime, setWeatherData, setHourlyW
   return (
     <div className="col-span-3 flex gap-5 justify-between">
       <form onSubmit={searchCity}>
-        <Container className="p-4 flex items-center justify-between w-fit">
+        <Container bg={'bg-white/10'} className="p-4 flex items-center justify-between w-fit">
           <input
             type="text"
             value={inputValue}
             onChange={(event) => {
               setInputValue(event.target.value);
             }}
-            className="bg-transparent w-full border-0 text-white focus:border-0 focus:outline-0 focus:ring-0"
+            className="placeholder-white/75 bg-transparent w-full border-0 text-white focus:border-0 focus:outline-0 focus:ring-0"
             name="city-input"
             placeholder="city..."
           />
@@ -120,7 +108,7 @@ function SearchLocation({ setLoading, setCurrentTime, setWeatherData, setHourlyW
           </button>
         </Container>
       </form>
-      <Container className={'p-4 flex items-center'}>
+      <Container bg={'bg-white/10'} className={'p-4 flex items-center'}>
         <button
           type="button"
           onClick={() => {

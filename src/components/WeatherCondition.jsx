@@ -1,6 +1,8 @@
-import moment from 'moment/moment';
 import { useState } from 'react';
+
+import moment from 'moment/moment';
 import { TemperatureCelsius } from 'tabler-icons-react';
+
 import Container from './Container';
 import SearchLocation from './SearchLocation';
 
